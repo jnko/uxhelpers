@@ -1,0 +1,5 @@
+#!/bin/bash
+cmd="lsblk --output NAME,MODEL,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINT,RO,RM,UUID"
+echo "lsdisk<=>$cmd"
+
+lsblk --output NAME,MODEL,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINT,RO,RM,UUID
