@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#sfdisk -d /dev/sda
+#label: dos
+#label-id: 0x0a970569
+#device: /dev/sda
+#unit: sectors
+#
+#/dev/sda1 : start=        2048, size=   , type=b
+
+
+
+
+if [ $# -ne 1 ]; then
+	echo "Usage: dosformat device"
+	exit -1
+fi
+
+if [ -e "$1" ] && [ -b "$1" ]; then
+	echo ""
+	echo "**WARNING**"
+	echo ""
+	echo "This will delete ALL data on the selected disk $1"
+	echo ""
+	read -p "Type 'yes' to continue: " ret
+	if [ "$ret" == "yes" ]; then
+		echo "Wiping..."
+		sfdisk --delete $1
+		echo "Creating partition..."
+		sfdisk $1 << EOS
+			label: dos
+			label-id: 0x0a970569
+			device: $1
+			unit: sectors
+			
+			/dev/$11 : start=        2048, size=    15255552, type=b
+EOS
+		echo "Formatting..."				
+		mkdosfs -F 32 -I $11
+	fi
+else
+	echo "Device does not exists or is not a block device."
+	exit -1
+fi
+
+
